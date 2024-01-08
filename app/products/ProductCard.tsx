@@ -4,20 +4,24 @@ import { formatPrice } from "@/utils/formatPrice";
 import { truncateText } from "@/utils/truncateText";
 import { Rating } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
   data: any;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
+    
+    const router=useRouter()
 
-  const productRating = data.reviews.reduce((acc:number,item:any)=>item.rating + acc,0)/data.reviews.length  
-
+    const productRating =
+    data.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
+    data.reviews.length;
 
   return (
-    <div className="col-span-1 text-center text-sm cursor-pointer p-2 hover:shadow-slate-400 shadow-md  rounded-lg border border-slate-200 bg-slate-50 m-2 transition-shadow duration-200 group">
+    <div onClick={()=>router.push(`/product/${data.id}`)} className="col-span-1 text-center text-sm cursor-pointer p-2 hover:shadow-slate-400 shadow-md  rounded-lg border border-slate-200 bg-slate-50 m-2 transition-shadow duration-200 group">
       <div className="flex flex-col items-center w-full gap-1">
-        <div  className="aspect-square overflow-hidden relative w-full">
+        <div className="aspect-square overflow-hidden relative w-full">
           <Image
             fill
             src={data.images[0].image}
@@ -27,7 +31,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
           />
         </div>
         <div className="mt-4">{truncateText(data.name)}</div>
-        <div><Rating value={productRating} readOnly /></div>
+        <div>
+          <Rating value={productRating} readOnly />
+        </div>
         <div>{data.reviews.length} reviews</div>
         <div className="font-semibold">{formatPrice(data.price)}</div>
       </div>
