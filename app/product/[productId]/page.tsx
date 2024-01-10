@@ -7,7 +7,7 @@ interface IParams{
 }
 
 const Product = ({params}:{params:IParams}) => {
-    console.log(params)
+   
     return (<div className="p-8"><Container>
         <ProductDetails product={product} />
         </Container></div>  );

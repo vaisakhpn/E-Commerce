@@ -1,19 +1,77 @@
 "use client";
 
+import SetColor from "@/app/products/SetColor";
+import SetQuantity from "@/app/products/SetQuantity";
 import { Rating } from "@mui/material";
+import { useCallback, useState } from "react";
 
 interface ProductDetailsProps {
   product: any;
 }
+export type CartProductType = {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  brand: string;
+  selectedImg: SelectedImgType;
+  quantity: number;
+  price: number;
+};
+
+export type SelectedImgType = {
+  color: string;
+  colorCode: string;
+  image: string;
+};
 
 const Horizontal = () => {
   return <hr className="w-[30%] my-2" />;
 };
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
+  const [cartProduct, setCartProduct] = useState<CartProductType>({
+    id: product.id,
+    name: product.name,
+    description: product.description,
+    category: product.category,
+    brand: product.brand,
+    selectedImg: { ...product.images[0] },
+    quantity: 1,
+    price: product.price,
+  });
+
   const productRating =
     product.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
     product.reviews.length;
+
+  const handleColorSelect = useCallback(
+    (value: SelectedImgType) => {
+      setCartProduct((prev) => {
+        return { ...prev, selectedImg: value };
+      });
+    },
+    [cartProduct.selectedImg]
+  );
+
+  const handleQtyDecrease = useCallback(() => {
+    if (cartProduct.quantity === 1) {
+      return;
+    }
+    setCartProduct((prev) => {
+      return { ...prev, quantity: prev.quantity - 1 };
+    });
+  }, [cartProduct]);
+
+  const handleQtyIncrease = useCallback(() => {
+    if (cartProduct.quantity === 5) {
+      return;
+    }
+
+    setCartProduct((prev) => {
+      return { ...prev, quantity: prev.quantity + 1 };
+    });
+  }, [cartProduct]);
 
   return (
     <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-12">
@@ -28,20 +86,32 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         <div className="text-justify">{product.description}</div>
         <Horizontal />
         <div>
-          <span className="font-semibold">CATEGORY: </span> 
+          <span className="font-semibold">CATEGORY: </span>
           {product.category}
         </div>
         <div>
           <span className="font-semibold">BRAND: </span>
-           {product.brand}
+          {product.brand}
         </div>
         <div className={product.inStock ? "text-teal-400" : "text-rose-400"}>
           {product.inStock ? "In Stock" : "Out of Stock"}
         </div>
         <Horizontal />
-        <div className="uppercase">Color</div>
+        <div className="uppercase">
+          <SetColor
+            cartProduct={cartProduct}
+            images={product.images}
+            handleColorSelect={handleColorSelect}
+          />
+        </div>
         <Horizontal />
-        <div className="uppercase">QUANTITY</div>
+        <div className="uppercase">
+          <SetQuantity
+            cartProduct={cartProduct}
+            handleQtyIncrease={handleQtyIncrease}
+            handleQtyDecrease={handleQtyDecrease}
+          />
+        </div>
         <Horizontal />
         <div>Add To Cart</div>
       </div>
