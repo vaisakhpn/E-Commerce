@@ -18,7 +18,7 @@ const ListRating: React.FC<ListRatingProps> = ({ product }) => {
           product.reviews.map((review: any) => {
             return (
               <div key={review.id} className="max-w-[300px]">
-                <div className="flex items-center gap-2 ">
+                <div className="flex items-center gap-3 ">
                   <div><Avatar src={review?.user.image} /></div>
                   <div className="font-semibold">{review?.user.name}</div>
                   <div className="font-light">
