@@ -17,7 +17,7 @@ const NavBar = () => {
               E-Commerce
             </Link>
             <div className="hidden md:block">Search</div>
-            <div className="flex items-center gap-1 md:gap-12 cursor-pointer">
+            <div className="flex items-center gap-8 md:gap-12 cursor-pointer">
               <div>Cart</div>
               <div>Profile</div>
             </div>
