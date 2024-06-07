@@ -8,7 +8,9 @@ const HomeBanner = () => {
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
             Summer Sales!
           </h1>
-
+          <p className="text-lg md:text-xl text-white mb-2">
+            Enjoy discount on selected items
+          </p>
           <p className="text-2xl md:text-5xl text-yellow-400 font-bold">
             GET 50% OFF
           </p>
